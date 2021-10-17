@@ -2,8 +2,8 @@ import os
 import numpy as np
 import json
 
-
-DATA_FILE_PATH = '../../../datasets/kag/nfl.train'
+phase = "val"
+DATA_FILE_PATH = f'../../../datasets/kag/nfl.{phase}'
 OUT_PATH = '../../../datasets/kag/annotations/'
 IMAGE_PATH = '../../../datasets/kag/dataset/images/'
 LABEL_PATH = '../../../datasets/kag/dataset/labels/'
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     if not os.path.exists(OUT_PATH):
         os.mkdir(OUT_PATH)
 
-    out_path = OUT_PATH + 'train.json'
+    out_path = OUT_PATH + f'{phase}.json'
     out = {'images': [], 'annotations': [], 'categories': [{'id': 1, 'name': 'helmet'}]}
     img_paths, label_paths = load_paths(DATA_FILE_PATH)
     image_cnt = 0
@@ -56,5 +56,5 @@ if __name__ == '__main__':
                     'area': fbox[2] * fbox[3],
                     'iscrowd': 0}
             out['annotations'].append(ann)
-    print('loaded train for {} images and {} samples'.format(len(out['images']), len(out['annotations'])))
+    print('loaded {} for {} images and {} samples'.format(phase, len(out['images']), len(out['annotations'])))
     json.dump(out, open(out_path, 'w'))
